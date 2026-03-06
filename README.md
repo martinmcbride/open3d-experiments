@@ -1,0 +1,1 @@
+Some experiments for design of OPENGL based 3D graphs for generativepy
