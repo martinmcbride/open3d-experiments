@@ -42,7 +42,7 @@ def draw_cube():
     glVertex3f(1, 1, -1)
 
     # Bottom (magenta)
-    glColor3f(1, 0, 1)
+    glColor3f(0, 0, 1)
     glVertex3f(-1, -1, -1)
     glVertex3f(1, -1, -1)
     glVertex3f(1, -1, 1)
@@ -61,7 +61,7 @@ def save_image(width, height, output_file):
     print(f"Saved {output_file}")
 
 
-def get_display_function(width, height, output_file):
+def get_display_function(draw_func, width, height, output_file):
 
     def display():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -70,7 +70,7 @@ def get_display_function(width, height, output_file):
         gluLookAt(3, 3, 3, 0, 0, 0, 0, 1, 0)
 
         glRotatef(30, 1, 1, 0)
-        draw_cube()
+        draw_func(width, height)
 
         glFlush()
 
@@ -81,9 +81,12 @@ def get_display_function(width, height, output_file):
 
 
 def init(width, height):
-    glClearColor(0.1, 0.1, 0.1, 1)
+    glClearColor(1, 1, 1, 1)
     glEnable(GL_DEPTH_TEST)
-
+    glEnable(GL_MULTISAMPLE)
+    glEnable(GL_LINE_SMOOTH)
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     glMatrixMode(GL_PROJECTION)
     gluPerspective(45, width / height, 0.1, 100)
 
@@ -92,12 +95,17 @@ def init(width, height):
 
 def make_opengl_3dimage(outfile, draw, width, height, background=0, channels=3):
     glutInit(sys.argv)
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH)
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH | GLUT_MULTISAMPLE)
     glutInitWindowSize(width, height)
-    glutCreateWindow(b"PyOpenGL Cube")
+    glutCreateWindow(b"PyOpenGL")
 
     init(width, height)
-    glutDisplayFunc(get_display_function(width, height, outfile))
+
+    draw(width, height)
+
+    glutDisplayFunc(get_display_function(draw, width, height, outfile))
 
     glutMainLoop()
 
+def example_draw(width, height):
+    pass
