@@ -3,54 +3,6 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from PIL import Image
 
-def draw_cube():
-    glBegin(GL_QUADS)
-
-    # Front (red)
-    glColor3f(1, 0, 0)
-    glVertex3f(-1, -1, 1)
-    glVertex3f(1, -1, 1)
-    glVertex3f(1, 1, 1)
-    glVertex3f(-1, 1, 1)
-
-    # Back (green)
-    glColor3f(0, 1, 0)
-    glVertex3f(-1, -1, -1)
-    glVertex3f(-1, 1, -1)
-    glVertex3f(1, 1, -1)
-    glVertex3f(1, -1, -1)
-
-    # Left (blue)
-    glColor3f(0, 0, 1)
-    glVertex3f(-1, -1, -1)
-    glVertex3f(-1, -1, 1)
-    glVertex3f(-1, 1, 1)
-    glVertex3f(-1, 1, -1)
-
-    # Right (yellow)
-    glColor3f(1, 1, 0)
-    glVertex3f(1, -1, -1)
-    glVertex3f(1, 1, -1)
-    glVertex3f(1, 1, 1)
-    glVertex3f(1, -1, 1)
-
-    # Top (cyan)
-    glColor3f(0, 1, 1)
-    glVertex3f(-1, 1, -1)
-    glVertex3f(-1, 1, 1)
-    glVertex3f(1, 1, 1)
-    glVertex3f(1, 1, -1)
-
-    # Bottom (magenta)
-    glColor3f(0, 0, 1)
-    glVertex3f(-1, -1, -1)
-    glVertex3f(1, -1, -1)
-    glVertex3f(1, -1, 1)
-    glVertex3f(-1, -1, 1)
-
-    glEnd()
-
-
 def save_image(width, height, output_file):
     glPixelStorei(GL_PACK_ALIGNMENT, 1)
     data = glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE)
@@ -67,9 +19,9 @@ def get_display_function(draw_func, width, height, output_file):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
 
-        gluLookAt(3, 3, 3, 0, 0, 0, 0, 1, 0)
+        gluLookAt(2, 2, 2, 0, 0, 0, 0, 0, 1)
 
-        glRotatef(30, 1, 1, 0)
+        glRotatef(0, 0, 0, 30)
         draw_func(width, height)
 
         glFlush()
@@ -106,6 +58,3 @@ def make_opengl_3dimage(outfile, draw, width, height, background=0, channels=3):
     glutDisplayFunc(get_display_function(draw, width, height, outfile))
 
     glutMainLoop()
-
-def example_draw(width, height):
-    pass
