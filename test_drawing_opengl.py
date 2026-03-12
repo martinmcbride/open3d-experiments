@@ -3,6 +3,6 @@ from plot_opengl import Axes
 
 
 def draw(width, height):
-    Axes().draw()
+    Axes().of_size((1, 1.3, 0.8)).draw()
 
 make_opengl_3dimage("cube.png", draw, 600, 500)
