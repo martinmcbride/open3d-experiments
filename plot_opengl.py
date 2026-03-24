@@ -107,10 +107,12 @@ class Axes:
         return [(point[i] - self.start[i]) * self.size[i] / self.extent[i] for i in range(3)]
 
     def _get_divs(self, start, extent, div):
+        close = abs(extent/10)
         divs = []
         n = math.ceil(start/div)*div
         while n <= start + extent:
-            divs.append(n)
+            if abs(n-start) > close and abs(n-(start + extent)) > close:
+                divs.append(n)
             n += div
         return divs
 
@@ -159,7 +161,7 @@ class Axes:
 
         glColor3f(*self.colors[0])
         markers = self._get_divs(self.start[0], self.extent[0], self.divs[0])
-        for m in markers[1:-1]:
+        for m in markers:
             pos = self.transform_from_graph((m, self.start[1]+self.extent[1], 0))
             glRasterPos3f(pos[0] + self.text_offset[0][0], pos[1] + self.text_offset[0][1], 0)
             label = f"{m:.1f}"
@@ -168,7 +170,7 @@ class Axes:
 
         glColor3f(*self.colors[1])
         markers = self._get_divs(self.start[1], self.extent[1], self.divs[1])
-        for m in markers[1:-1]:
+        for m in markers:
             pos = self.transform_from_graph((self.start[0]+self.extent[0], m, 0))
             glRasterPos3f(pos[0] + self.text_offset[1][0], pos[1] + self.text_offset[1][1], 0)
             label = f"{m:.1f}"
@@ -177,7 +179,7 @@ class Axes:
 
         glColor3f(*self.colors[2])
         markers = self._get_divs(self.start[2], self.extent[2], self.divs[2])
-        for m in markers[1:-1]:
+        for m in markers:
             pos = self.transform_from_graph((0, self.start[1]+self.extent[1], m))
             glRasterPos3f(0, pos[1] + self.text_offset[2][1],  pos[2] + self.text_offset[2][2])
             label = f"{m:.1f}"
